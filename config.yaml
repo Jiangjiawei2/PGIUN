@@ -1,0 +1,49 @@
+# Hardware specification
+n_threads: 6    # number of threads for data loading
+n_GPUs: 1   # number of GPUs
+seed: 6   # random seed
+
+# Data specifications
+# data_dir: "D:\\jjw\\icme2023\\Mc_Rec_Net_cjc\\dataset"    # Datasets root directory
+data_dir: "/home/wwl/disk/cjc/datasets/Mc_datasets"    # Datasets root directory
+
+data_name: "BraTS"    # Data name: IXI, fastMRI
+modal: "T2"   # "the modal of data"
+slice_indexes: # slice indexes
+  - 40
+  - 50
+  - 60
+  - 70
+  - 75
+  - 80
+  - 85
+  - 90
+  - 100
+  - 110
+
+  # Model specifications
+# root_path: "D:\\jjw\\icme2023\\Mc_Rec_Net_cjc\\Mc_Rec_Net"   # root path
+root_path: "/home/wwl/disk/cjc2/Mc_Rec_Net_cjc\\Mc_Rec_Net"   # root path
+
+n_blocks: 2   # the number of blocks
+
+# Training specifications
+save_dir: "experiment"  # directory to save results
+
+  # Optimization specifications
+## 学习率的设置和衰减方式
+lr: 1e-4    # learning rate
+lr_policy: "step"   # learning rate decay mode:steplr/multisteplr/lambdalr
+gamma: 0.5    # learning rate decay factor
+step_size: 10   # StepLR parameter
+multistep_size: 15    # MultiStepLR parameter
+epoch_decay: 20   # lambda parameter, the number of iterations that begin to decay
+
+## 优化器的选择
+optimizer: "Adam"   # optimizer to use (SGD | Adam | RMSprop)
+momentum: 0.9   # SGD momentum
+weight_decay: 0   # weight decay (L2 penalty)
+
+# T2Net
+
+
