@@ -205,34 +205,6 @@ class RecurrentModel(nn.Module):
         self.recon = I
         return self.net, self.recon
 
-    # def update_G(self):
-    #     loss_G_L1 = 0
-    #     self.optimizer_G.zero_grad()
-
-    #     # Image domain
-    #     loss_img_dc = 0
-    #     for j in range(1, self.n_recurrent + 1):
-    #         loss_img_dc = loss_img_dc + self.criterion(self.net['r%d_img_dc_pred' % j], self.tag_image_full)
-
-    #     # Kspace domain
-    #     loss_kspc = 0
-    #     for j in range(1, self.n_recurrent + 1):
-    #         loss_kspc = loss_kspc + self.criterion(self.net['r%d_kspc_pred' % j].permute(0, 2, 3, 1), self.tag_kspace_full)
-
-    #     loss_G_L1 = loss_img_dc + loss_kspc
-    #     self.loss_G_L1 = loss_G_L1.item()
-    #     self.loss_img = loss_img_dc.item()
-    #     self.loss_kspc = loss_kspc.item()
-
-    #     total_loss = loss_G_L1
-    #     total_loss.backward()
-    #     self.optimizer_G.step()
-
-    # def optimize(self):
-    #     self.loss_G_L1 = 0
-
-    #     self.forward()
-    #     self.update_G()   
 
 
         
