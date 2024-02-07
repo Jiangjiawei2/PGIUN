@@ -1,6 +1,4 @@
-'''
-        -Quadratic Splitting Network for MR Image Reconstruction
-'''
+
 import torch.nn as nn
 import torch
 from einops import rearrange
