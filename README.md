@@ -34,9 +34,9 @@ To train the model(s) in the paper, run this command:
 ```train
 python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random --gpuid 0 --modal T2 --acceleration 4 --data_name IXI
 ```
-<p---
+<!p---
 >📋  Describe how to train the models, with example commands on how to train the models in your paper, including the full training procedure and appropriate hyperparameters.
-<p---
+--<
 ## Evaluation
 
 To evaluate my model on MRI dataset, e.g., IXI, BraTS, fastMRI, run:
