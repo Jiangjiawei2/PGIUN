@@ -80,7 +80,7 @@ python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random 
 ```
 where  
 ```--model``` provides the experiment name for the current run.  
-```--mask``` provides the mask used in the current experiment.  
+```--mask``` provides the mask used in the current run.  
 ```--acceleration``` defines acceleration ratio.  
 ```--data_name``` provides the data name of the current run.  
 Other hyperparameters can be adjusted in the code as well.  
