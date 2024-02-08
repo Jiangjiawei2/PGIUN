@@ -70,7 +70,7 @@ Data
 │            
 └── ...
 ```
-> Put the 
+> Put the ```data path``` in data _ dir in config.yaml.
 ## Training
 
 To train the model(s) in the paper, run this command:
