@@ -1,4 +1,3 @@
-This is the code of our paper "PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI", currently submitting to TCI. If you have any questions, please feel free to contact me："jjw@zjut.edu.cn" 
 
 # My Paper Title
 
