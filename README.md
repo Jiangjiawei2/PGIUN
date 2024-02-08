@@ -10,7 +10,7 @@ To install requirements:
 ```setup
 pip install -r requirements.txt
 ```
-
+```
 einops==0.4.1
 ipdb==0.13.9
 layers==0.1.5
@@ -26,7 +26,7 @@ timm==0.5.4
 torch==1.13.1+cu117
 torchvision==0.14.1+cu117
 tqdm==4.64.1
-
+```
 ## Training
 
 To train the model(s) in the paper, run this command:
