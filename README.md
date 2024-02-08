@@ -29,7 +29,7 @@ tqdm==4.64.1
 ```
 
 ## Dataset Setup
-'''
+```
 Data
 ├── TRAIN                   # contain training files
 │   ├── T1
@@ -110,7 +110,7 @@ Data
 │   └── ...
 │            
 └── ...
-'''
+```
 ## Training
 
 To train the model(s) in the paper, run this command:
