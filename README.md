@@ -78,7 +78,7 @@ To train the model(s) in the paper, run this command:
 ```train
 python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random --gpuid 0 --modal T2 --acceleration 4 --data_name IXI
 ```
-where
+where  
 ```--model``` provides the experiment name for the current run.  
 ```--mask``` provides the mask used in the current experiment.  
 ```--acceleration``` defines acceleration ratio.  
