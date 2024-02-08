@@ -27,6 +27,89 @@ torch==1.13.1+cu117
 torchvision==0.14.1+cu117
 tqdm==4.64.1
 ```
+
+## Dataset Setup
+Data
+├── TRAIN                   # contain training files
+│   ├── T1
+│   │   ├── kspace
+│   │   │   ├── train_1.mat         
+│   │   │   ├── train_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── train_N.mat 
+│   │   └── ...
+│   │   
+│   ├── T2
+│   │   ├── kspace
+│   │   │   ├── train_1.mat          
+│   │   │   ├── train_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── train_N.mat 
+│   │   └── ...
+│   │   
+│   ├── FLAIR
+│   │   ├── kspace
+│   │   │   ├── train_1.mat          
+│   │   │   ├── train_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── train_N.mat 
+│   │   └── ...
+│   └── ...
+│
+├── VALI                    # contain validation files
+│   ├── T1
+│   │   ├── kspace
+│   │   │   ├── vali_1.mat          
+│   │   │   ├── vali_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── vali_M.mat 
+│   │   └── ...
+│   │   
+│   ├── T2
+│   │   ├── kspace
+│   │   │   ├── vali_1.mat          
+│   │   │   ├── vali_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── vali_M.mat 
+│   │   └── ...
+│   │   
+│   ├── FLAIR
+│   │   ├── kspace
+│   │   │   ├── vali_1.mat          
+│   │   │   ├── vali_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── vali_M.mat 
+│   │   └── ...
+│   └── ...
+│
+├── TEST                    # contain test files
+│   ├── T1
+│   │   ├── kspace
+│   │   │   ├── test_1.mat          
+│   │   │   ├── test_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── test_K.mat 
+│   │   └── ...
+│   │   
+│   ├── T2
+│   │   ├── kspace
+│   │   │   ├── test_1.mat          
+│   │   │   ├── test_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── test_K.mat 
+│   │   └── ...
+│   │   
+│   ├── FLAIR
+│   │   ├── kspace
+│   │   │   ├── test_1.mat          
+│   │   │   ├── test_2.mat 
+│   │   │   ├── ...         
+│   │   │   └── test_K.mat 
+│   │   └── ...
+│   └── ...
+│            
+└── ...
+
 ## Training
 
 To train the model(s) in the paper, run this command:
