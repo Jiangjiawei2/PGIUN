@@ -81,7 +81,7 @@ python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random 
 
 ## Evaluation
 
-To evaluate my model on MRI dataset, e.g., IXI, BraTS, fastMRI, run:
+To evaluate the model on MRI dataset, e.g., IXI, BraTS, fastMRI, run:
 
 ```eval
 python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random --gpuid 0 --modal T2 --acceleration 4 --data_name IXI --train test
