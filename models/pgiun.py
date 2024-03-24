@@ -14,7 +14,7 @@ def make_model(args, parent=False):
     k = torch.Tensor(1, 1, 256, 256)
     mask = torch.Tensor(1, 1, 256, 256)
     gt = torch.Tensor(1, 1, 256, 256)
-    model = GAADMMNet()
+    model = PGIUN()
     flops, params = profile(model, (a,k,mask,gt,))
     print('flops: ', flops/1e9, 'params: ', params/1e6)
 
@@ -525,14 +525,14 @@ def split(x,dim):
     x = (x0, x1, x2, x3)
     return x
     
-class GAADMMNet(nn.Module):
+class PGIUN(nn.Module):
     def __init__(self,  buffer_size=32, n_iter=8, norm='ortho',):
         '''
         :param buffer_size: m
         :param n_iter: n
         :param norm: 'ortho' norm for fft
         '''
-        super(GAADMMNet, self).__init__()
+        super(PGIUN, self).__init__()
         self.norm = norm
         self.m = buffer_size
         self.n_iter = n_iter
