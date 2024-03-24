@@ -25,7 +25,6 @@ def make_model(args, parent=False):
     print(f'{total_trainable_params:,} training parameters.')
     return model
 
-## ABLATION 
 class CSE_Block(nn.Module):
     def __init__(self, in_ch, out_ch, r):
         super(CSE_Block, self).__init__()
@@ -337,7 +336,6 @@ class U_net_trans(nn.Module):
         self.tconv1 = nn.ConvTranspose2d(out_ch, out_ch, kernel_size=5, stride=1, padding=0,groups=4)
         self.tconv2 = nn.ConvTranspose2d(out_ch, out_ch, kernel_size=5, stride=1, padding=0,groups=4)
         self.attn2 = l_nl_attn(dim, num_heads=num_heads, num_tokens=num_tokens, window_size=window_size, qkv_bias=qkv_bias, attn_drop=attn_drop, drop=drop)
-        # self.tconv3 = nn.ConvTranspose2d(out_ch, out_ch, kernel_size=5, stride=1, padding=0)
         self.tconv4 = nn.ConvTranspose2d(out_ch, out_ch, kernel_size=5, stride=1, padding=0)
         self.tconv5 = nn.ConvTranspose2d(out_ch, out_ch, kernel_size=5, stride=1, padding=0)
 
@@ -402,9 +400,6 @@ class Resudial_B(nn.Module):
             self.block.append(nn.Conv2d(in_ch, int(in_ch/2), kernel_size=3, padding =1))
             self.block.append(nn.ReLU())
             self.block.append(nn.Conv2d(int(in_ch/2), in_ch, kernel_size=3, padding =1))
-
-        # for _ in range(numB):
-        #     self.layer.append(self.block)
             
         self.tail = nn.Conv2d(in_ch, out_ch, kernel_size=1)
     def forward(self, x):
@@ -561,38 +556,10 @@ class GAADMMNet(nn.Module):
         self.InfoFusion_K = nn.ModuleList([])
         for _ in range(n_iter):
 
-                # self.denoiser.append(
-                #     U_net(buffer_size,buffer_size),)
-            # self.denoiser_IZ.append(
-            #     U_net_trans(buffer_size,buffer_size, dim=32,num_heads=8,num_tokens=8,window_size=7,qkv_bias=True,drop=0.,attn_drop=0., ),)
             self.denoiser_IG.append(
                 U_net_trans(buffer_size,buffer_size, dim=32,num_heads=8,num_tokens=8,window_size=7,qkv_bias=True,drop=0.,attn_drop=0., ),)
             self.denoiser_fusion.append(
                 SKFF(buffer_size),)
-
-            # self.InfoFusion0.append(
-            #      CSE_Block(buffer_size,buffer_size,8),
-            # )
-            
-
-            # self.InfoFusion1.append(
-            #      CSE_Block(buffer_size,buffer_size,8),
-            # )
-
-            # self.InfoFusion2.append(
-            #      CSE_Block(3*buffer_size,buffer_size,8),
-            # )
-
-            # self.InfoFusion3.append(
-            #      CSE_Block(2*buffer_size,buffer_size,8),
-            # )
-
-            # self.InfoFusion4.append(
-            #     CSE_Block(2*buffer_size,buffer_size,8),
-            # )
-            # self.InfoFusion_K.append(
-            #    CSE_Block(2*buffer_size,2*buffer_size,8),
-            # )
 
             self.InfoFusion0.append(
                  BiAttn(buffer_size,buffer_size),
@@ -631,7 +598,6 @@ class GAADMMNet(nn.Module):
         gt_0 = torch.cat([gt] * self.m, 1).to(img.device)
         # initialize buffer f: the concatenation of m copies of the zero-filled images
         x_0 = torch.cat([img] * self.m, 1).to(img.device)
-        # y_0 = torch.cat([y] * self.m, 1).to(img.device)
         
         Z_new= self.lift(split(x_0,self.m))
         
@@ -643,8 +609,6 @@ class GAADMMNet(nn.Module):
         U_klist.append(U_hat)
         Z_k =Z_new
         
-        # FTy = torch.abs(torch.fft.ifft2(torch.fft.ifftshift(y_0, dim=(-2, -1))))
-        # n reconstruction blocks
         for i in range(self.n_iter):
             Z_k  =  self.InfoFusion1[i](Z_k-self.InfoFusion0[i](Z_k)+self.rho[i] *(Z_k - G_hat + U_hat))
             X_k = self.lift.inverse(split(Z_k,self.m))
