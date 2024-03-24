@@ -416,15 +416,6 @@ class Resudial_B(nn.Module):
         out =self.tail(x)
         return out  # (16, 1, 256, 256)
 
-# class denoiser(nn.modules):
-#     def __init__(self,  img_channel):
-#         super(denoiser,self).__init__()
-#         self.denoiser_img = U_net_trans(img_channel,img_channel, dim=32,num_heads=8,num_tokens=8,window_size=7,qkv_bias=True,drop=0.,attn_drop=0., )
-#         self.denoiser_k = BiAttn(img_channel*2)
-#         self.fusion = 
-#     def forward(self,img_in, k_in):
-#         prox_img = self.denoiser_img(img_in)
-#         prox_k = self.denoiser_k(k_in)
 
 class Inv_emd(nn.Module):
     def __init__(self, emd_c=32):
@@ -540,33 +531,27 @@ def split(x,dim):
     return x
     
 class GAADMMNet(nn.Module):
-    def __init__(self,  buffer_size=32, n_iter=8, norm='ortho',type='unet'):
+    def __init__(self,  buffer_size=32, n_iter=8, norm='ortho',):
         '''
         :param buffer_size: m
         :param n_iter: n
-        :param n_filter: output channel for convolutions
         :param norm: 'ortho' norm for fft
         '''
         super(GAADMMNet, self).__init__()
         self.norm = norm
         self.m = buffer_size
         self.n_iter = n_iter
-        # the initialization of mu may influence the final accuracy
         self.eta = nn.Parameter(0.5 * torch.ones((buffer_size, 1)))
         self.gamma = nn.Parameter(0.5 * torch.ones((buffer_size, 1)))
         self.alpha = nn.Parameter(0.05 * torch.ones((buffer_size, 1)))
         self.rho = nn.Parameter(0.05 * torch.ones((buffer_size, 1)))
         self.lift = Inv_emd(buffer_size)
-        # self.beta2 = nn.Parameter(0.5 * torch.ones((buffer_size, 1)))
-        # self.DC = DC_layer()
+
         self.DC_I  =DC_layer_I()
         self.denoiser_IZ = nn.ModuleList([])
         self.denoiser_IG = nn.ModuleList([])
         self.denoiser_fusion = nn.ModuleList([])
-        # self.fai1 =  Resudial_B(buffer_size,buffer_size,numB=6)           
-        # self.fai2 =  Resudial_B(buffer_size,buffer_size,numB=6) 
-        # self.fai1 =  BiAttn(buffer_size)           
-        # self.fai2 =  BiAttn(buffer_size)    
+   
 
         self.InfoFusion0 = nn.ModuleList([])
         self.InfoFusion1 = nn.ModuleList([])
@@ -661,30 +646,12 @@ class GAADMMNet(nn.Module):
         # FTy = torch.abs(torch.fft.ifft2(torch.fft.ifftshift(y_0, dim=(-2, -1))))
         # n reconstruction blocks
         for i in range(self.n_iter):
-            # Ztemp = self.lift.inverse(split(Z_k,self.m))
-            # Ztemp = self.lift(split( F_IT( F_I(Ztemp,mask) - y_0),self.m ))
-            
-            # Z_k  =  self.InfoFusion1[i](torch.cat([Z_k, G_hat , U_hat,Ztemp], dim=1))
-            # Z_k = self.InfoFusion1[i](Z_k -  +/ self.rho[i] *(Z_k - G_hat + U_hat))
-
-            # Ztemp = self.lift.inverse(split(Z_k,self.m))
-            # Ztemp,_ = self.DC_I(Ztemp,y,mask)
-            # Ztemp= self.lift(split(Ztemp,self.m))
-            
-            # Ztemp = Z_k - self.alpha[i] * (Ztemp) + self.rho[i] *(Z_k - G_hat + U_hat)
-            # Z_k = self.denoiser_IZ[i](Ztemp)
-            
-            # Z_k  =  self.InfoFusion1[i](torch.cat([Z_k,self.alpha[i] * (Ztemp),self.rho[i] *(Z_k - G_hat + U_hat)], dim=1))
-            # Z_k = self.InfoFusion1[i](Z_k - self.alpha[i] * (Ztemp) + self.rho[i] *(Z_k - G_hat + U_hat))
-            # Z_k  =     Z_k - self.InfoFusion1[i](Z_k) + self.rho[i] *(Z_k - G_hat + U_hat)
             Z_k  =  self.InfoFusion1[i](Z_k-self.InfoFusion0[i](Z_k)+self.rho[i] *(Z_k - G_hat + U_hat))
-            # print(Z_k.shape)
-            # print(Z_k.device)
             X_k = self.lift.inverse(split(Z_k,self.m))
             X_k,_ = self.DC_I(X_k,y,mask)
             Z_k= self.lift(split(X_k,self.m))
-
             G_k1 = self.denoiser_IG[i](Z_k+U_hat)
+            
             'k-space'
             G_ks = torch.fft.fftshift(torch.fft.fft2(Z_k+U_hat))
             x_K_real = G_ks.real
@@ -699,22 +666,18 @@ class GAADMMNet(nn.Module):
             G_k =self.denoiser_fusion[i]([G_k1,G_k2])
 
             G_klist.append(G_k)
-            # U_k = U_hat +Z_k -G_k
             U_k =  self.InfoFusion2[i](torch.cat([U_hat, Z_k, -G_k],dim=1))
             U_klist.append(U_k)
 
-            # U_hat = (1+self.gamma[i])*U_klist[-1] - self.gamma[i]*U_klist[-2]
             U_hat = self.InfoFusion3[i]( torch.cat([(1+self.gamma[i])*U_klist[-1], -self.gamma[i]*U_klist[-2] ], dim=1))
 
-            # G_hat = (1+self.gamma[i])*G_klist[-1] -self.gamma[i]*G_klist[-2] 
             G_hat = self.InfoFusion4[i]( torch.cat([(1+self.gamma[i])*G_klist[-1], -self.gamma[i]*G_klist[-2] ], dim=1))
 
-        # X_out = self.lift.inverse(split(Z_k,self.m))
         X_out = self.lift.inverse(split(G_k,self.m))  
 
         X_under_lift = self.lift(split(x_0,self.m))   
         X_gt = self.lift(split(gt_0,self.m))    
-        # X_out,_= self.DC_I(X_out,y,mask)
+
 
         return X_out[:, 0:1], X_out, X_under_lift, X_gt
 
