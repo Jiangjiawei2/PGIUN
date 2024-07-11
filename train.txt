@@ -1,1 +1,1 @@
-python mc_rec_main.py --model pgiun --batch_size 2 --n_epochs 30 --mask equispaced_fraction --gpuid 0 --modal T2 --acceleration 4 --data_name IXI
+python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 30 --mask radial --gpuid 0 --modal T2 --acceleration 4 --data_name IXI
