@@ -70,7 +70,7 @@ Data
 │            
 └── ...
 ```
-> Configure ```data_dir``` and ```root_path``` in the ```config.yaml``` folder
+> Configure ```data_dir``` and ```root_path``` in the ```config.yaml``` folder, and configure the ```config.yaml``` path in ```option.py```.
 ## Training
 
 To train the model(s) in the paper, run this command:
