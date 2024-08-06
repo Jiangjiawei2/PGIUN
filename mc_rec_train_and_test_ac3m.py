@@ -54,10 +54,6 @@ def train(train_loader, model, loss, optimizer, epoch, train_writer, device, log
 
 
         # # --------------------------------------------------------------------------------------------------------------
-        # # 将under_sample变为复数形式，并进行数据截断
-        # fully_real = torch.unsqueeze(fully[:, 0, :, :], 1)
-        # fully_imag = torch.unsqueeze(fully[:, 1, :, :], 1)
-        # fully = torch.complex(fully_real, fully_imag)
 
         # 将under_sample变为复数形式
         under_sample_real = torch.unsqueeze(under_sample[:, 0, :, :], 1)
@@ -65,30 +61,11 @@ def train(train_loader, model, loss, optimizer, epoch, train_writer, device, log
         under_sample = torch.complex(under_sample_real, under_sample_imag)  # bs ,1, 256, 256
         under_image_rec = torch.abs(torch.fft.ifft2(under_sample))
 
-        # fully = torch.fft.fftshift(torch.fft.fft2(image_rec))  # [b, 1, H, W]
-        # under_sample = fully * mask
-        # under_image_rec = torch.abs(torch.fft.ifft2(torch.fft.ifftshift(under_sample)))
-        # fully_ref = torch.fft.fftshift(torch.fft.fft2(image_ref))  # [B, 1, H, W]
-
-        # plt.subplot(131), plt.imshow(np.array(image_ref[0, 0, :, :].cpu()), 'gray')
-        # plt.subplot(132), plt.imshow(np.array(image_rec[0, 0, :, :].cpu()), 'gray')
-        # plt.subplot(133), plt.imshow(np.array(under_image_rec[0, 0, :, :].cpu()), 'gray')
-        # plt.subplot(133), plt.imshow(np.array(under_image_rec[0, 0, :, :].cpu()), 'gray')
-        # plt.show()
-        # plt.savefig('y2.png')
-
-        # 参考图片，欠采样图片，欠采样k-space，掩码
-        # losse = EdgeLoss().to(device)
-        # lossp = PerceptualLoss().to(device)
-        lossc = CharbonnierLoss().to(device)
-        
         image_Rec, x_rec_lift,x_under_lift,x_gt_lift = model(under_image_rec, under_sample, mask,image_rec)
 
-        # loss_ = lossc(image_Rec, image_rec) + 0.06*losse(image_Rec, image_rec) + 0.5*lossp(image_Rec,image_rec)/lossp(under_image_rec,image_rec)
+    
         loss_ = lossc(image_Rec, image_rec) + 0.1*(lossc(x_rec_lift,x_gt_lift)/lossc(x_under_lift,x_gt_lift))
         # loss_ = lossc(image_Rec, image_rec) 
-        # loss_ = lossc(image_Rec, image_rec) + 0.05*lossc(x_rec_lift,x_gt_lift)
-        # loss_ = loss(image_Rec, image_rec) 
         # --------------------------------------------------------------------------------------------------------------
         # 更新损失并作记录
         train_losses.update(loss_.item(), args.batch_size)  # 整个epoch的平均损失
@@ -156,30 +133,17 @@ def validate(valid_loader, model, loss, epoch, output_writers, device, logger, a
             fully_ref = fully_ref.float().to(device)  # (bs, 2, 256, 256)
 
             # # --------------------------------------------------------------------------------------------------------------
-            # # 将under_sample变为复数形式，并进行数据截断
-            # fully_real = torch.unsqueeze(fully[:, 0, :, :], 1)
-            # fully_imag = torch.unsqueeze(fully[:, 1, :, :], 1)
-            # fully = torch.complex(fully_real, fully_imag)
-# 
+
             # 将under_sample变为复数形式
             under_sample_real = torch.unsqueeze(under_sample[:, 0, :, :], 1)
             under_sample_imag = torch.unsqueeze(under_sample[:, 1, :, :], 1)
             under_sample = torch.complex(under_sample_real, under_sample_imag)  # bs ,1, 256, 256
             under_image_rec = torch.abs(torch.fft.ifft2(under_sample))
 
-            # fully = torch.fft.fftshift(torch.fft.fft2(image_rec))  # [b, 1, H, W]
-            # under_sample = fully * mask
-            # under_image_rec = torch.abs(torch.fft.ifft2(torch.fft.ifftshift(under_sample)))
-            # fully_ref = torch.fft.fftshift(torch.fft.fft2(image_ref))  # [B, 1, H, W]
-
-            # plt.subplot(131), plt.imshow(np.array(image_ref[0, 0, :, :].cpu()), 'gray')
-            # plt.subplot(132), plt.imshow(np.array(image_rec[0, 0, :, :].cpu()), 'gray')
-            # plt.subplot(133), plt.imshow(np.array(under_image_rec[0, 0, :, :].cpu()), 'gray')
-            # plt.show()
 
             # 参考图片，欠采样图片，欠采样k-space，掩码
             image_Rec, x_rec_lift,x_under_lift,x_gt_lift = model(under_image_rec, under_sample, mask,image_rec)
-            loss_ = loss(image_Rec, image_rec)
+            loss_ = lossc(image_Rec, image_rec) + 0.1*(lossc(x_rec_lift,x_gt_lift)/lossc(x_under_lift,x_gt_lift))
 
             valid_losses.update(loss_.item(), image_rec.size(0))  # 整个epoch的平均损失
 
