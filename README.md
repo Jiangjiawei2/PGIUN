@@ -1,7 +1,7 @@
 
 # PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI
 
-This repository is the official implementation of [PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI], accepted by TCI. If you have any questions, please feel free to contact me："jjw@zjut.edu.cn" 
+This repository is the official implementation of [PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI](https://ieeexplore.ieee.org/abstract/document/10584139), accepted by TCI. If you have any questions, please feel free to contact me："jjw@zjut.edu.cn" 
 
 ## Requirements
 
@@ -93,6 +93,7 @@ To evaluate the model on MRI dataset, e.g., IXI, BraTS, fastMRI, run:
 python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random --gpuid 0 --modal T2 --acceleration 4 --data_name IXI --train test
 ```
 
+## Citation
 If you find it helpful, please cite our literature:
 ```
 @article{jiang2024pgiun,
