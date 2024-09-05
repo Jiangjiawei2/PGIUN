@@ -94,6 +94,7 @@ python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random 
 ```
 
 If you find it helpful, please cite our literature:
+```
 @article{jiang2024pgiun,
   title={PGIUN: Physics-Guided Implicit Unrolling Network for Accelerated MRI},
   author={Jiang, Jiawei and He, Zihan and Quan, Yueqian and Wu, Jie and Zheng, Jianwei},
@@ -101,5 +102,5 @@ If you find it helpful, please cite our literature:
   year={2024},
   publisher={IEEE}
 }
-
+```
 
