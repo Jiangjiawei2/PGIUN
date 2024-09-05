@@ -1,7 +1,7 @@
 
 # PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI
 
-This repository is the official implementation of [PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI], currently submitting to TCI. If you have any questions, please feel free to contact me："jjw@zjut.edu.cn" 
+This repository is the official implementation of [PGIUN:Physics-Guided Implicit Unrolling Network for Accelerated MRI], accepted by TCI. If you have any questions, please feel free to contact me："jjw@zjut.edu.cn" 
 
 ## Requirements
 
