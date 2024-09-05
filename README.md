@@ -93,4 +93,13 @@ To evaluate the model on MRI dataset, e.g., IXI, BraTS, fastMRI, run:
 python mc_rec_main.py --model pgiun --batch_size 1 --n_epochs 100 --mask random --gpuid 0 --modal T2 --acceleration 4 --data_name IXI --train test
 ```
 
+If you find it helpful, please cite our literature:
+@article{jiang2024pgiun,
+  title={PGIUN: Physics-Guided Implicit Unrolling Network for Accelerated MRI},
+  author={Jiang, Jiawei and He, Zihan and Quan, Yueqian and Wu, Jie and Zheng, Jianwei},
+  journal={IEEE Transactions on Computational Imaging},
+  year={2024},
+  publisher={IEEE}
+}
+
 
